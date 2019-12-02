@@ -6,4 +6,4 @@ There's an Advent of Code sub-reddit with great discussions and other participan
 
 Day | Title | Development Notes
 --- | --- | ---
-1 | [Rocket Equation](./src/Day01.hs) | Calculate fuel required for a spaceship
+1 | [Rocket Equation](./src/Day01.hs) | Calculate fuel required for a spaceship ([Go](./golang/Day01.go))
