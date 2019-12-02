@@ -6,4 +6,5 @@ There's an Advent of Code sub-reddit with great discussions and other participan
 
 Day | Title | Development Notes
 --- | --- | ---
+2 | [1202 Program Alarm](./src/Day02.hs) | Run a mini-computer with opcodes to find values
 1 | [Rocket Equation](./src/Day01.hs) | Calculate fuel required for a spaceship ([Go](./golang/Day01.go))
