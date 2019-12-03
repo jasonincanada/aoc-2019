@@ -1,0 +1,116 @@
+# [01;32mjason@ubuntu18d[00m:[01;34m~/aoc2019[00m$ # Starting screen session...
+[01;32mjason@ubuntu18d[00m:[01;34m~/aoc2019[00m$ date
+Tue Dec  3 05:41:29 EST 2019
+[01;32mjason@ubuntu18d[00m:[01;34m~/aoc2019[00m$ stack repl
+[0mUsing main module: 1. Package `aoc2019' component aoc2019:exe:aoc2019-exe with main-is file: /home/jason/aoc2019/app/Main.hs[0m
+[0mThe following GHC options are incompatible with GHCi and have not been passed to it: -threaded[0m
+[0mConfiguring GHCi with the following packages: aoc2019[0m
+GHCi, version 8.4.4: http://www.haskell.org/ghc/  :? for help
+Loaded GHCi configuration from /home/jason/.ghci
+[1 of 5] Compiling Day02            ( /home/jason/aoc2019/src/Day02.hs, interpreted )
+[2 of 5] Compiling Scanner          ( /home/jason/aoc2019/src/Scanner.hs, interpreted )
+[3 of 5] Compiling Day03            ( /home/jason/aoc2019/src/Day03.hs, interpreted )
+[4 of 5] Compiling Main             ( /home/jason/aoc2019/app/Main.hs, interpreted )
+[5 of 5] Compiling Day01            ( /home/jason/aoc2019/src/Day01.hs, interpreted )
+Ok, five modules loaded.
+Loaded GHCi configuration from /tmp/haskell-stack-ghci/f1873baf/ghci-script
+
+[?1h=[34mλ> [mmainE[?1l>-1
+-2
+
+[?1h=[34mλ> [m:rE[?1l>[4 of 5] Compiling Day03            ( /home/jason/aoc2019/src/Day03.hs, interpreted )
+Ok, five modules loaded.
+
+[?1h=[34mλ> [mmainE[?1l>601
+-2
+
+[?1h=[34mλ> [m
+[1]+  Stopped                 stack repl
+[01;32mjason@ubuntu18d[00m:[01;34m~/aoc2019[00m$ tr -cd ',' < inputs/3.input | wc -c
+600
+[01;32mjason@ubuntu18d[00m:[01;34m~/aoc2019[00m$ :r
+:r: command not found
+[01;32mjason@ubuntu18d[00m:[01;34m~/aoc2019[00m$ fg
+stack repl
+:rE[?1l>[4 of 5] Compiling Day03            ( /home/jason/aoc2019/src/Day03.hs, interpreted )
+Ok, five modules loaded.
+
+[?1h=[34mλ> [mmainE[?1l>*** Exception: Prelude.read: no parse
+
+[?1h=[34mλ> [mimport Mon[K[K[KControl.Monad.StateE[?1l>
+[?1h=[34mλ> [m:t evalStateE[?1l>evalState :: State s a -> s -> a
+
+[?1h=[34mλ> [m:rE[?1l>[4 of 5] Compiling Day03            ( /home/jason/aoc2019/src/Day03.hs, interpreted )
+[5 of 5] Compiling Main             ( /home/jason/aoc2019/app/Main.hs, interpreted ) [Day03 changed]
+Ok, five modules loaded.
+
+[?1h=[34mλ> [mmainE[?1l>29
+-2
+
+[?1h=[34mλ> [m:t absE[?1l>abs :: Num a => a -> a
+
+[?1h=[34mλ> [m:rE[?1l>[4 of 5] Compiling Day03            ( /home/jason/aoc2019/src/Day03.hs, interpreted )
+Ok, five modules loaded.
+
+[?1h=[34mλ> [m:rt abs[6Dmain[KE[?1l>1674
+-2
+
+[?1h=[34mλ> [m:rE[?1l>[4 of 5] Compiling Day03            ( /home/jason/aoc2019/src/Day03.hs, interpreted )
+[5 of 5] Compiling Main             ( /home/jason/aoc2019/app/Main.hs, interpreted ) [Day03 changed]
+Ok, five modules loaded.
+
+[?1h=[34mλ> [mmainE[?1l>1674
+-2
+
+[?1h=[34mλ> [m:rE[?1l>[4 of 5] Compiling Day03            ( /home/jason/aoc2019/src/Day03.hs, interpreted )
+Ok, five modules loaded.
+
+[?1h=[34mλ> [mmainE[?1l>1674
+-2
+
+[?1h=[34mλ> [m:rE[?1l>[4 of 5] Compiling Day03            ( /home/jason/aoc2019/src/Day03.hs, interpreted )
+Ok, five modules loaded.
+
+[?1h=[34mλ> [mmainE[?1l>1674
+-2
+
+[?1h=[34mλ> [m:rE[?1l>[4 of 5] Compiling Day03            ( /home/jason/aoc2019/src/Day03.hs, interpreted )
+Ok, five modules loaded.
+
+[?1h=[34mλ> [mmainE[?1l>1674
+14012
+
+[?1h=[34mλ> [mm[K:rE[?1l>[4 of 5] Compiling Day03            ( /home/jason/aoc2019/src/Day03.hs, interpreted )
+Ok, five modules loaded.
+
+[?1h=[34mλ> [mmainE[?1l>1674
+14012
+
+[?1h=[34mλ> [mE[?1l>Leaving GHCi.
+[01;32mjason@ubuntu18d[00m:[01;34m~/aoc2019[00m$ gs
+On branch master
+Your branch is up to date with 'origin/master'.
+
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+	[32mmodified:   app/Main.hs[m
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+
+	[31maoc2019.cabal[m
+	[31minputs/3.input[m
+	[31mother/[m
+	[31mscreenlog.0[m
+	[31msrc/Day03.hs[m
+	[31mstack.yaml.lock[m
+
+[01;32mjason@ubuntu18d[00m:[01;34m~/aoc2019[00m$ ga app/Main.hs inputs/3.input src/Day03.hs 
+[01;32mjason@ubuntu18d[00m:[01;34m~/aoc2019[00m$ gco "day 3"
+[master e9faba1] day 3
+ 3 files changed, 133 insertions(+), 2 deletions(-)
+ create mode 100644 inputs/3.input
+ create mode 100644 src/Day03.hs
+[01;32mjason@ubuntu18d[00m:[01;34m~/aoc2019[00m$ exit
+exit
