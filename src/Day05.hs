@@ -99,6 +99,7 @@ step = do
              destAt <- readAt (ip+1)
 
              update destAt int
+             seek (ip+2)
 
              step
 
