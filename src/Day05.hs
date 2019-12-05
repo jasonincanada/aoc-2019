@@ -1,3 +1,5 @@
+{-# Language LambdaCase #-}
+
 module Day05 (part1, part2) where
 
 {-  Advent of Code 2019 - Day 5 - https://adventofcode.com/2019/day/5
@@ -6,6 +8,7 @@ module Day05 (part1, part2) where
 
 import           Control.Arrow       ((>>>))
 import           Control.Monad.State
+import           Data.Bool           (bool)
 import qualified Data.IntMap as IM
 import           Data.List.Split     (splitOn)
 
@@ -16,12 +19,16 @@ type Address = Int
 type Opcode  = Int
 type Input   = IM.IntMap Opcode
 
+data Mode    = Position | Immediate
+
 -- the state of the computer at any time is the instruction pointer
 -- and the list of (mutable) opcodes
 data Computer = Computer { address :: Address
                          , memory  :: IM.IntMap Opcode
                          , inputs  :: [Int]
                          , outputs :: [Int]
+                         , mode1   :: Mode
+                         , mode2   :: Mode
                          }
 
 -- the list of outputs (via opcode 4)
@@ -48,7 +55,7 @@ calc1 opcodes = Output result
     result = evalState process start
 
     -- the input list is just 1, given in the problem description
-    start  = Computer 0 opcodes [1] []
+    start  = Computer 0 opcodes [1] [] Position Position
 
 
 process :: State Computer [Int]
@@ -61,9 +68,9 @@ step = do
   instruction <- readAt ip
 
   let opcode = instruction `mod` 100
-  let mode1  = getDigit 3 instruction
-  let mode2  = getDigit 4 instruction
-  let mode3  = getDigit 5 instruction
+
+  setMode 1 (getDigit 3 instruction == 1)
+  setMode 2 (getDigit 4 instruction == 1)
 
   case opcode of
     1  -> do add1At <- readAt (ip+1)    -- get the locations of our data
@@ -71,8 +78,8 @@ step = do
              destAt <- readAt (ip+3)
 
              -- get the actual values to add
-             add1   <- if mode1 == 1 then return add1At else readAt add1At
-             add2   <- if mode2 == 1 then return add2At else readAt add2At
+             add1   <- getValue 1 add1At
+             add2   <- getValue 2 add2At
 
              update destAt (add1+add2)
              seek (ip+4)
@@ -84,8 +91,8 @@ step = do
              destAt <- readAt (ip+3)
 
              -- get the actual values to multiply
-             mul1   <- if mode1 == 1 then return mul1At else readAt mul1At
-             mul2   <- if mode2 == 1 then return mul2At else readAt mul2At
+             mul1   <- getValue 1 mul1At
+             mul2   <- getValue 2 mul2At
 
              update destAt (mul1*mul2)
              seek (ip+4)
@@ -122,6 +129,16 @@ seek addy = modify (\c -> c { address = addy } )
 readAt :: Address -> State Computer Opcode
 readAt addy = gets (memory >>> flip (IM.!) addy)
 
+-- in Immediate mode, return the value
+-- in Position mode, consider it an address and return what's at the address
+getValue :: Int -> Int -> State Computer Int
+getValue n val
+  | n == 1 = go mode1
+  | n == 2 = go mode2
+  where
+    go m = gets m >>= \case Position  -> readAt val
+                            Immediate -> return val
+
 -- change an opcode at a position
 update :: Address -> Int -> State Computer ()
 update addy opcode = do
@@ -141,6 +158,10 @@ outputAt addy = do
   outputs <- gets outputs
   modify (\c -> c { outputs = value : outputs })
 
+setMode :: Int -> Bool -> State Computer ()
+setMode 1 mode = modify (\c -> c { mode1 = bool Position Immediate mode })
+setMode 2 mode = modify (\c -> c { mode2 = bool Position Immediate mode })
+
 
 {- Part 2 -}
 
@@ -154,7 +175,7 @@ calc2 opcodes = Output result
 
                                  -- look for this specific number from the description
                                  evalState process start == [19690720] ]
-    start  = Computer 0 opcodes [1] []
+    start  = Computer 0 opcodes [1] [] Position Position
 
 
 {- Operations -}
