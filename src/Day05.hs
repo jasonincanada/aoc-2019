@@ -73,8 +73,9 @@ step = do
              add2At <- readAt (ip+2)
              destAt <- readAt (ip+3)
 
-             add1   <- readAt add1At    -- get the actual values to add
-             add2   <- readAt add2At
+             -- get the actual values to add
+             add1   <- if mode1 == 0 then return add1At else readAt add1At
+             add2   <- if mode2 == 0 then return add2At else readAt add2At
 
              update destAt (add1+add2)
              seek (ip+4)
@@ -85,8 +86,9 @@ step = do
              mul2At <- readAt (ip+2)
              destAt <- readAt (ip+3)
 
-             mul1   <- readAt mul1At    -- get the actual values to multiply
-             mul2   <- readAt mul2At
+             -- get the actual values to multiply
+             mul1   <- if mode1 == 0 then return mul1At else readAt mul1At
+             mul2   <- if mode2 == 0 then return mul2At else readAt mul2At
 
              update destAt (mul1*mul2)
              seek (ip+4)
