@@ -45,16 +45,14 @@ parse = split >>> map read >>> toMap
 calc1 :: Input -> Output
 calc1 opcodes = Output result
   where
-    result = evalState (process 12 2) start
+    result = evalState process start
 
     -- the input list is just 1, given in the problem description
     start  = Computer 0 opcodes [1] []
 
 
-process :: Opcode -> Opcode -> State Computer [Int]
-process noun verb = do
-  update 1 noun
-  update 2 verb
+process :: State Computer [Int]
+process = do
   seek 0
 
   step
@@ -158,7 +156,7 @@ calc2 opcodes = Output result
                                  verb <- [0..99],
 
                                  -- look for this specific number from the description
-                                 evalState (process noun verb) start == [19690720] ]
+                                 evalState process start == [19690720] ]
     start  = Computer 0 opcodes [1] []
 
 
