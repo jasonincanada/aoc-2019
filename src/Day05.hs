@@ -51,7 +51,7 @@ calc1 opcodes = Output result
     result = evalState process start
 
     -- the input list is just 1, given in the problem description
-    start  = Computer 0 opcodes [1] [] Position Position
+    start  = Computer 0 opcodes Position Position [1] []
 
 
 process :: State Computer [Int]
@@ -71,13 +71,9 @@ step = do
   case opcode of
 
     -- add
-    1  -> do add1At <- readAt (ip+1)    -- get the locations of our data
-             add2At <- readAt (ip+2)
+    1  -> do add1   <- readAt (ip+1) >>= getValue 1
+             add2   <- readAt (ip+2) >>= getValue 2
              destAt <- readAt (ip+3)
-
-             -- get the actual values to add
-             add1   <- getValue 1 add1At
-             add2   <- getValue 2 add2At
 
              update destAt (add1+add2)
 
@@ -86,13 +82,9 @@ step = do
 
 
     -- multiply
-    2  -> do mul1At <- readAt (ip+1)    -- get the locations of our data
-             mul2At <- readAt (ip+2)
+    2  -> do mul1   <- readAt (ip+1) >>= getValue 1
+             mul2   <- readAt (ip+2) >>= getValue 2
              destAt <- readAt (ip+3)
-
-             -- get the actual values to multiply
-             mul1   <- getValue 1 mul1At
-             mul2   <- getValue 2 mul2At
 
              update destAt (mul1*mul2)
 
@@ -222,7 +214,7 @@ calc2 opcodes = Output result
     result = evalState process start
 
     -- the input list is just 5, given in the problem description
-    start  = Computer 0 opcodes [5] [] Position Position
+    start  = Computer 0 opcodes Position Position [5] []
 
 
 {- Operations -}
