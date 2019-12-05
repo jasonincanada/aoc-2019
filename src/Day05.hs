@@ -29,7 +29,6 @@ data Computer = Computer { address :: Address
                          , outputs :: [Int]
                          , mode1   :: Mode
                          , mode2   :: Mode
-                         , mode3   :: Mode
                          }
 
 -- the list of outputs (via opcode 4)
@@ -56,7 +55,7 @@ calc1 opcodes = Output result
     result = evalState process start
 
     -- the input list is just 1, given in the problem description
-    start  = Computer 0 opcodes [1] [] Position Position Position
+    start  = Computer 0 opcodes [1] [] Position Position
 
 
 process :: State Computer [Int]
@@ -140,7 +139,7 @@ step = do
     -- less than
     7  -> do param1 <- readAt (ip+1) >>= getValue 1
              param2 <- readAt (ip+2) >>= getValue 2
-             param3 <- readAt (ip+3) >>= getValue 3
+             param3 <- readAt (ip+3)
 
              update param3 (bool 0 1 $ param1 < param2)
              seek (ip+4)
@@ -150,7 +149,7 @@ step = do
     -- equals
     8  -> do param1 <- readAt (ip+1) >>= getValue 1
              param2 <- readAt (ip+2) >>= getValue 2
-             param3 <- readAt (ip+3) >>= getValue 3
+             param3 <- readAt (ip+3)
 
              update param3 (bool 0 1 $ param1 == param2)
              seek (ip+4)
@@ -179,7 +178,6 @@ getValue :: Int -> Int -> State Computer Int
 getValue n val
   | n == 1 = go mode1
   | n == 2 = go mode2
-  | n == 3 = go mode3
   where
     go m = gets m >>= \case Position  -> readAt val
                             Immediate -> return val
@@ -206,7 +204,6 @@ outputAt addy = do
 setMode :: Int -> Bool -> State Computer ()
 setMode 1 mode = modify (\c -> c { mode1 = bool Position Immediate mode })
 setMode 2 mode = modify (\c -> c { mode2 = bool Position Immediate mode })
-setMode 3 mode = modify (\c -> c { mode3 = bool Position Immediate mode })
 
 
 {- Part 2 -}
@@ -217,7 +214,7 @@ calc2 opcodes = Output result
     result = evalState process start
 
     -- the input list is just 5, given in the problem description
-    start  = Computer 0 opcodes [5] [] Position Position Position
+    start  = Computer 0 opcodes [5] [] Position Position
 
 
 {- Operations -}
