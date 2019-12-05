@@ -6,7 +6,6 @@ module Day05 (part1, part2) where
 
 import           Control.Arrow       ((>>>))
 import           Control.Monad.State
-import           Data.Bifunctor      (first, second)
 import qualified Data.IntMap as IM
 import           Data.List.Split     (splitOn)
 
@@ -19,7 +18,9 @@ type Input   = IM.IntMap Opcode
 
 -- the state of the computer at any time is the instruction pointer
 -- and the list of (mutable) opcodes
-type Computer = (Address, IM.IntMap Opcode)
+data Computer = Computer { address :: Address
+                         , memory  :: IM.IntMap Opcode
+                         }
 
 data Output  = Output Int
 
@@ -42,7 +43,7 @@ calc1 :: Input -> Output
 calc1 opcodes = Output result
   where
     result = evalState (process 12 2) start
-    start  = (0, opcodes)
+    start  = Computer 0 opcodes
 
 
 process :: Opcode -> Opcode -> State Computer Opcode
@@ -56,7 +57,7 @@ process noun verb = do
 
 step :: State Computer Opcode
 step = do
-  ip <- gets fst
+  ip <- gets address
   opcode <- readAt ip
 
   case opcode of
@@ -89,19 +90,17 @@ step = do
 
 -- move the instruction pointer
 seek :: Address -> State Computer ()
-seek addy = modify (first f)
-  where
-    f = const addy
+seek addy = modify (\c -> c { address = addy } )
 
 -- get an opcode at an address
 readAt :: Address -> State Computer Opcode
-readAt addy = gets (snd >>> flip (IM.!) addy)
+readAt addy = gets (memory >>> flip (IM.!) addy)
 
 -- change an opcode at a position
 update :: Address -> Int -> State Computer ()
-update addy opcode = modify (second f)
-  where
-    f = IM.insert addy opcode
+update addy opcode = do
+  memory' <- IM.insert addy opcode <$> gets memory
+  modify (\c -> c { memory = memory' })
 
 
 
@@ -117,7 +116,7 @@ calc2 opcodes = Output result
 
                                  -- look for this specific number from the description
                                  evalState (process noun verb) start == 19690720 ]
-    start  = (0, opcodes)
+    start  = Computer 0 opcodes
 
 
 {- Operations -}
