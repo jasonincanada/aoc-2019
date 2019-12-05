@@ -1,6 +1,6 @@
-module Day02 (part1, part2) where
+module Day05 (part1, part2) where
 
-{-  Advent of Code 2019 - Day 2 - https://adventofcode.com/2019/day/2
+{-  Advent of Code 2019 - Day 5 - https://adventofcode.com/2019/day/5
 
 -}
 
