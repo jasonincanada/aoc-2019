@@ -88,6 +88,13 @@ step = do
 
              step
 
+    3  -> do int    <- input
+             destAt <- readAt (ip+1)
+
+             update destAt int
+
+             step
+
     99 -> readAt 0
 
 
