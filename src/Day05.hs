@@ -20,6 +20,7 @@ type Input   = IM.IntMap Opcode
 -- and the list of (mutable) opcodes
 data Computer = Computer { address :: Address
                          , memory  :: IM.IntMap Opcode
+                         , inputs  :: [Int]
                          }
 
 data Output  = Output Int
@@ -43,7 +44,9 @@ calc1 :: Input -> Output
 calc1 opcodes = Output result
   where
     result = evalState (process 12 2) start
-    start  = Computer 0 opcodes
+
+    -- the input list is just 1, given in the problem description
+    start  = Computer 0 opcodes [1]
 
 
 process :: Opcode -> Opcode -> State Computer Opcode
@@ -102,6 +105,12 @@ update addy opcode = do
   memory' <- IM.insert addy opcode <$> gets memory
   modify (\c -> c { memory = memory' })
 
+-- get a value from the input
+input :: State Computer Int
+input = do
+  (i:is) <- gets inputs
+  modify (\c -> c { inputs = is })
+  return i
 
 
 {- Part 2 -}
@@ -116,7 +125,7 @@ calc2 opcodes = Output result
 
                                  -- look for this specific number from the description
                                  evalState (process noun verb) start == 19690720 ]
-    start  = Computer 0 opcodes
+    start  = Computer 0 opcodes [1]
 
 
 {- Operations -}
