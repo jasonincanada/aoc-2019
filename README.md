@@ -6,6 +6,7 @@ There's an Advent of Code sub-reddit with great discussions and other participan
 
 Day | Title | Development Notes
 --- | --- | ---
+5 | [Chance of Asteroids](./src/Day05.hs) | Upgrade the computer from day 2 and output values
 4 | [Secure Container](./src/Day04.hs) | Count the number of valid password attempts
 3 | [Crossed Wires](./src/Day03.hs) | Find intersection points for two meandering paths
 2 | [1202 Program Alarm](./src/Day02.hs) | Run a mini-computer with opcodes to find values
