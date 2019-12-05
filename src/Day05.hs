@@ -114,6 +114,28 @@ step = do
 
              step
 
+    -- jump-if-true
+    5  -> do param1 <- readAt (ip+1) >>= getValue 1
+
+             if param1 /= 0
+             then do param2 <- readAt (ip+2) >>= getValue 2
+                     seek param2
+                     step
+
+             else do seek (ip+3)
+                     step
+
+    -- jump-if-false
+    6  -> do param1 <- readAt (ip+1) >>= getValue 1
+
+             if param1 == 0
+             then do param2 <- readAt (ip+2) >>= getValue 2
+                     seek param2
+                     step
+
+             else do seek (ip+3)
+                     step
+
     99 -> reverse <$> gets outputs
 
 
