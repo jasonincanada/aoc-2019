@@ -137,6 +137,27 @@ step = do
              else do seek (ip+3)
                      step
 
+    -- less than
+    7  -> do param1 <- readAt (ip+1) >>= getValue 1
+             param2 <- readAt (ip+2) >>= getValue 2
+             param3 <- readAt (ip+3) >>= getValue 3
+
+             update param3 (bool 0 1 $ param1 < param2)
+             seek (ip+4)
+
+             step
+
+    -- equals
+    8  -> do param1 <- readAt (ip+1) >>= getValue 1
+             param2 <- readAt (ip+2) >>= getValue 2
+             param3 <- readAt (ip+3) >>= getValue 3
+
+             update param3 (bool 0 1 $ param1 == param2)
+             seek (ip+4)
+
+             step
+
+
     99 -> reverse <$> gets outputs
 
 
@@ -193,14 +214,10 @@ setMode 3 mode = modify (\c -> c { mode3 = bool Position Immediate mode })
 calc2 :: Input -> Output
 calc2 opcodes = Output result
   where
-    result = [head list]
+    result = evalState process start
 
-    list   = [ 100*noun + verb | noun <- [0..99],
-                                 verb <- [0..99],
-
-                                 -- look for this specific number from the description
-                                 evalState process start == [19690720] ]
-    start  = Computer 0 opcodes [1] [] Position Position Position
+    -- the input list is just 5, given in the problem description
+    start  = Computer 0 opcodes [5] [] Position Position Position
 
 
 {- Operations -}
