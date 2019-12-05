@@ -29,6 +29,7 @@ data Computer = Computer { address :: Address
                          , outputs :: [Int]
                          , mode1   :: Mode
                          , mode2   :: Mode
+                         , mode3   :: Mode
                          }
 
 -- the list of outputs (via opcode 4)
@@ -55,7 +56,7 @@ calc1 opcodes = Output result
     result = evalState process start
 
     -- the input list is just 1, given in the problem description
-    start  = Computer 0 opcodes [1] [] Position Position
+    start  = Computer 0 opcodes [1] [] Position Position Position
 
 
 process :: State Computer [Int]
@@ -157,6 +158,7 @@ getValue :: Int -> Int -> State Computer Int
 getValue n val
   | n == 1 = go mode1
   | n == 2 = go mode2
+  | n == 3 = go mode3
   where
     go m = gets m >>= \case Position  -> readAt val
                             Immediate -> return val
@@ -183,6 +185,7 @@ outputAt addy = do
 setMode :: Int -> Bool -> State Computer ()
 setMode 1 mode = modify (\c -> c { mode1 = bool Position Immediate mode })
 setMode 2 mode = modify (\c -> c { mode2 = bool Position Immediate mode })
+setMode 3 mode = modify (\c -> c { mode3 = bool Position Immediate mode })
 
 
 {- Part 2 -}
@@ -197,7 +200,7 @@ calc2 opcodes = Output result
 
                                  -- look for this specific number from the description
                                  evalState process start == [19690720] ]
-    start  = Computer 0 opcodes [1] [] Position Position
+    start  = Computer 0 opcodes [1] [] Position Position Position
 
 
 {- Operations -}
