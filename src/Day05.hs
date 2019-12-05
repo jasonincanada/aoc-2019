@@ -64,6 +64,9 @@ step = do
   instruction <- readAt ip
 
   let opcode = instruction `mod` 100
+  let mode1  = getDigit 3 instruction
+  let mode2  = getDigit 4 instruction
+  let mode3  = getDigit 5 instruction
 
   case opcode of
     1  -> do add1At <- readAt (ip+1)    -- get the locations of our data
@@ -99,6 +102,10 @@ step = do
 
     99 -> readAt 0
 
+
+-- get the nth digit from the right of a base-10 integer
+getDigit :: Int -> Int -> Int
+getDigit i number = number `div` (10^(i-1)) `mod` 10
 
 -- move the instruction pointer
 seek :: Address -> State Computer ()
