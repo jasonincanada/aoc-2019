@@ -73,6 +73,7 @@ step = do
   setMode 2 (getDigit 4 instruction == 1)
 
   case opcode of
+
     1  -> do add1At <- readAt (ip+1)    -- get the locations of our data
              add2At <- readAt (ip+2)
              destAt <- readAt (ip+3)
@@ -82,9 +83,10 @@ step = do
              add2   <- getValue 2 add2At
 
              update destAt (add1+add2)
-             seek (ip+4)
 
+             seek (ip+4)
              step
+
 
     2  -> do mul1At <- readAt (ip+1)    -- get the locations of our data
              mul2At <- readAt (ip+2)
@@ -95,24 +97,27 @@ step = do
              mul2   <- getValue 2 mul2At
 
              update destAt (mul1*mul2)
-             seek (ip+4)
 
+             seek (ip+4)
              step
+
 
     3  -> do int    <- input
              destAt <- readAt (ip+1)
 
              update destAt int
-             seek (ip+2)
 
+             seek (ip+2)
              step
+
 
     4  -> do at <- readAt (ip+1)
 
              outputAt at
-             seek (ip+2)
 
+             seek (ip+2)
              step
+
 
     -- jump-if-true
     5  -> do param1 <- readAt (ip+1) >>= getValue 1
@@ -125,6 +130,7 @@ step = do
              else do seek (ip+3)
                      step
 
+
     -- jump-if-false
     6  -> do param1 <- readAt (ip+1) >>= getValue 1
 
@@ -136,15 +142,17 @@ step = do
              else do seek (ip+3)
                      step
 
+
     -- less than
     7  -> do param1 <- readAt (ip+1) >>= getValue 1
              param2 <- readAt (ip+2) >>= getValue 2
              param3 <- readAt (ip+3)
 
              update param3 (bool 0 1 $ param1 < param2)
-             seek (ip+4)
 
+             seek (ip+4)
              step
+
 
     -- equals
     8  -> do param1 <- readAt (ip+1) >>= getValue 1
@@ -152,8 +160,8 @@ step = do
              param3 <- readAt (ip+3)
 
              update param3 (bool 0 1 $ param1 == param2)
-             seek (ip+4)
 
+             seek (ip+4)
              step
 
 
