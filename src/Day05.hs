@@ -77,7 +77,7 @@ step = do
 
              update destAt (add1+add2)
 
-             seek (ip+4)
+             jump 4
              step
 
 
@@ -88,7 +88,7 @@ step = do
 
              update destAt (mul1*mul2)
 
-             seek (ip+4)
+             jump 4
              step
 
 
@@ -98,7 +98,7 @@ step = do
 
              update destAt int
 
-             seek (ip+2)
+             jump 2
              step
 
 
@@ -107,7 +107,7 @@ step = do
 
              output value
 
-             seek (ip+2)
+             jump 2
              step
 
 
@@ -118,7 +118,7 @@ step = do
              then do param 2 >>= seek
                      step
 
-             else do seek (ip+3)
+             else do jump 3
                      step
 
 
@@ -129,7 +129,7 @@ step = do
              then do param 2 >>= seek
                      step
 
-             else do seek (ip+3)
+             else do jump 3
                      step
 
 
@@ -140,7 +140,7 @@ step = do
 
              update param3 (bool 0 1 $ param1 < param2)
 
-             seek (ip+4)
+             jump 4
              step
 
 
@@ -151,7 +151,7 @@ step = do
 
              update param3 (bool 0 1 $ param1 == param2)
 
-             seek (ip+4)
+             jump 4
              step
 
 
@@ -162,6 +162,11 @@ step = do
 -- get the nth digit from the right of a base-10 integer
 getDigit :: Int -> Int -> Int
 getDigit i number = number `div` (10^(i-1)) `mod` 10
+
+jump :: Int -> State Computer ()
+jump n = do
+  ip <- gets address
+  seek (ip+n)
 
 -- move the instruction pointer
 seek :: Address -> State Computer ()
