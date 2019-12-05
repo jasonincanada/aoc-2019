@@ -21,9 +21,11 @@ type Input   = IM.IntMap Opcode
 data Computer = Computer { address :: Address
                          , memory  :: IM.IntMap Opcode
                          , inputs  :: [Int]
+                         , outputs :: [Int]
                          }
 
-data Output  = Output Int
+-- the list of outputs (via opcode 4)
+data Output  = Output [Int]
 
 instance Show Output where
   show (Output value) = show value
@@ -46,10 +48,10 @@ calc1 opcodes = Output result
     result = evalState (process 12 2) start
 
     -- the input list is just 1, given in the problem description
-    start  = Computer 0 opcodes [1]
+    start  = Computer 0 opcodes [1] []
 
 
-process :: Opcode -> Opcode -> State Computer Opcode
+process :: Opcode -> Opcode -> State Computer [Int]
 process noun verb = do
   update 1 noun
   update 2 verb
@@ -58,7 +60,7 @@ process noun verb = do
   step
 
 
-step :: State Computer Opcode
+step :: State Computer [Int]
 step = do
   ip <- gets address
   instruction <- readAt ip
@@ -103,7 +105,14 @@ step = do
 
              step
 
-    99 -> readAt 0
+    4  -> do at <- readAt (ip+1)
+
+             outputAt at
+             seek (ip+2)
+
+             step
+
+    99 -> reverse <$> gets outputs
 
 
 -- get the nth digit from the right of a base-10 integer
@@ -131,20 +140,26 @@ input = do
   modify (\c -> c { inputs = is })
   return i
 
+outputAt :: Address -> State Computer ()
+outputAt addy = do
+  value   <- readAt addy
+  outputs <- gets outputs
+  modify (\c -> c { outputs = value : outputs })
+
 
 {- Part 2 -}
 
 calc2 :: Input -> Output
 calc2 opcodes = Output result
   where
-    result = head list
+    result = [head list]
 
     list   = [ 100*noun + verb | noun <- [0..99],
                                  verb <- [0..99],
 
                                  -- look for this specific number from the description
-                                 evalState (process noun verb) start == 19690720 ]
-    start  = Computer 0 opcodes [1]
+                                 evalState (process noun verb) start == [19690720] ]
+    start  = Computer 0 opcodes [1] []
 
 
 {- Operations -}
