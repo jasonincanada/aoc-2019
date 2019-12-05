@@ -74,6 +74,7 @@ step = do
 
   case opcode of
 
+    -- add
     1  -> do add1At <- readAt (ip+1)    -- get the locations of our data
              add2At <- readAt (ip+2)
              destAt <- readAt (ip+3)
@@ -88,6 +89,7 @@ step = do
              step
 
 
+    -- multiply
     2  -> do mul1At <- readAt (ip+1)    -- get the locations of our data
              mul2At <- readAt (ip+2)
              destAt <- readAt (ip+3)
@@ -102,6 +104,7 @@ step = do
              step
 
 
+    -- save input
     3  -> do int    <- input
              destAt <- readAt (ip+1)
 
@@ -111,6 +114,7 @@ step = do
              step
 
 
+    -- output
     4  -> do at <- readAt (ip+1)
 
              outputAt at
@@ -165,6 +169,7 @@ step = do
              step
 
 
+    -- quit
     99 -> reverse <$> gets outputs
 
 
