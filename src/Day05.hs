@@ -52,10 +52,7 @@ calc1 opcodes = Output result
 
 
 process :: State Computer [Int]
-process = do
-  seek 0
-
-  step
+process = seek 0 >> step
 
 
 step :: State Computer [Int]
