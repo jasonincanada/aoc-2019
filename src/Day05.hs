@@ -61,7 +61,9 @@ process noun verb = do
 step :: State Computer Opcode
 step = do
   ip <- gets address
-  opcode <- readAt ip
+  instruction <- readAt ip
+
+  let opcode = instruction `mod` 100
 
   case opcode of
     1  -> do add1At <- readAt (ip+1)    -- get the locations of our data
