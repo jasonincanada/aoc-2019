@@ -115,9 +115,9 @@ step = do
 
 
     -- output
-    4  -> do at <- readAt (ip+1)
+    4  -> do value <- readAt (ip+1) >>= readAt
 
-             outputAt at
+             output value
 
              seek (ip+2)
              step
@@ -208,9 +208,8 @@ input = do
   modify (\c -> c { inputs = is })
   return i
 
-outputAt :: Address -> State Computer ()
-outputAt addy = do
-  value   <- readAt addy
+output :: Int -> State Computer ()
+output value = do
   outputs <- gets outputs
   modify (\c -> c { outputs = value : outputs })
 
