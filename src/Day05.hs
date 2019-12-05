@@ -71,8 +71,8 @@ step = do
   case opcode of
 
     -- add
-    1  -> do add1   <- readAt (ip+1) >>= getValue 1
-             add2   <- readAt (ip+2) >>= getValue 2
+    1  -> do add1   <- param 1
+             add2   <- param 2
              destAt <- readAt (ip+3)
 
              update destAt (add1+add2)
@@ -82,8 +82,8 @@ step = do
 
 
     -- multiply
-    2  -> do mul1   <- readAt (ip+1) >>= getValue 1
-             mul2   <- readAt (ip+2) >>= getValue 2
+    2  -> do mul1   <- param 1
+             mul2   <- param 2
              destAt <- readAt (ip+3)
 
              update destAt (mul1*mul2)
@@ -112,11 +112,10 @@ step = do
 
 
     -- jump-if-true
-    5  -> do param1 <- readAt (ip+1) >>= getValue 1
+    5  -> do param1 <- param 1
 
              if param1 /= 0
-             then do param2 <- readAt (ip+2) >>= getValue 2
-                     seek param2
+             then do param 2 >>= seek
                      step
 
              else do seek (ip+3)
@@ -124,11 +123,10 @@ step = do
 
 
     -- jump-if-false
-    6  -> do param1 <- readAt (ip+1) >>= getValue 1
+    6  -> do param1 <- param 1
 
              if param1 == 0
-             then do param2 <- readAt (ip+2) >>= getValue 2
-                     seek param2
+             then do param 2 >>= seek
                      step
 
              else do seek (ip+3)
@@ -136,8 +134,8 @@ step = do
 
 
     -- less than
-    7  -> do param1 <- readAt (ip+1) >>= getValue 1
-             param2 <- readAt (ip+2) >>= getValue 2
+    7  -> do param1 <- param 1
+             param2 <- param 2
              param3 <- readAt (ip+3)
 
              update param3 (bool 0 1 $ param1 < param2)
@@ -147,8 +145,8 @@ step = do
 
 
     -- equals
-    8  -> do param1 <- readAt (ip+1) >>= getValue 1
-             param2 <- readAt (ip+2) >>= getValue 2
+    8  -> do param1 <- param 1
+             param2 <- param 2
              param3 <- readAt (ip+3)
 
              update param3 (bool 0 1 $ param1 == param2)
@@ -173,15 +171,22 @@ seek addy = modify (\c -> c { address = addy } )
 readAt :: Address -> State Computer Opcode
 readAt addy = gets (memory >>> flip (IM.!) addy)
 
--- in Immediate mode, return the value
--- in Position mode, consider it an address and return what's at the address
-getValue :: Int -> Int -> State Computer Int
-getValue n val
-  | n == 1 = go mode1
-  | n == 2 = go mode2
+-- get a parameter
+param :: Int -> State Computer Int
+param i = do
+  ip <- gets address
+  readAt (ip+i) >>= getValue i
+
   where
-    go m = gets m >>= \case Position  -> readAt val
-                            Immediate -> return val
+    -- in Immediate mode, return the value
+    -- in Position mode, consider it an address and return what's at the address
+    getValue :: Int -> Int -> State Computer Int
+    getValue n val
+      | n == 1 = go mode1
+      | n == 2 = go mode2
+      where
+        go m = gets m >>= \case Position  -> readAt val
+                                Immediate -> return val
 
 -- change an opcode at a position
 update :: Address -> Int -> State Computer ()
