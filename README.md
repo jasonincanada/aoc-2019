@@ -6,8 +6,7 @@ There's an Advent of Code sub-reddit with great discussions and other participan
 
 Day | Title | Development Notes
 --- | --- | ---
-6 | [Universal Orbit Map](./src/Day06.hs) | Calculate path lengths and node distances in a
-graph
+6 | [Universal Orbit Map](./src/Day06.hs) | Calculate path lengths and node distances in a graph
 5 | [Chance of Asteroids](./src/Day05.hs) | Upgrade the computer from day 2 and output values
 4 | [Secure Container](./src/Day04.hs) | Count the number of valid password attempts
 3 | [Crossed Wires](./src/Day03.hs) | Find intersection points for two meandering paths
