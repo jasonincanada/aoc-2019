@@ -54,7 +54,7 @@ calc1 edges = Output result
 
     -- the distance from a node to the root (COM) is 1 more than the node's parent.
     -- COM is 0 hops from itself and forms the base case of our recursion
-    dist :: Idx -> Int
+    dist :: Idx -> Hops
     dist ((M.!) idxToNode -> node)
       | node == "COM" = 0
       | otherwise     = 1 + array A.! (nodeToIdx M.! (parents M.! node))
