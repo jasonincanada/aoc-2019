@@ -79,12 +79,12 @@ calc1 edges = Output result
 calc2 :: Input -> Output
 calc2 edges = Output result
   where
-    result  = (length fromYou - length common)
-            + (length fromSan - length common)
+    result  = (length toYou - length common)
+            + (length toSan - length common)
 
-    fromYou = pathFromRoot "YOU"
-    fromSan = pathFromRoot "SAN"
-    common  = commonPrefix fromYou fromSan
+    toYou   = pathFromRoot "YOU"
+    toSan   = pathFromRoot "SAN"
+    common  = commonPrefix toYou toSan
 
     -- get the list of nodes from the root COM to the given one.
     -- we'll do this for both YOU and SAN, snip out the common prefix, and
