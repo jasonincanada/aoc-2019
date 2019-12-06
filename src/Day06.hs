@@ -82,15 +82,15 @@ calc2 edges = Output result
     result  = (length fromYou - length common)
             + (length fromSan - length common)
 
-    fromYou = pathToRoot "YOU"
-    fromSan = pathToRoot "SAN"
+    fromYou = pathFromRoot "YOU"
+    fromSan = pathFromRoot "SAN"
     common  = commonPrefix fromYou fromSan
 
-    -- get the list of nodes from the given one to the root node COM.
+    -- get the list of nodes from the root COM to the given one.
     -- we'll do this for both YOU and SAN, snip out the common prefix, and
     -- add the lengths of the remaining paths to get our result
-    pathToRoot :: Node -> [Node]
-    pathToRoot = go >>> reverse
+    pathFromRoot :: Node -> [Node]
+    pathFromRoot = go >>> reverse
       where
         go :: Node -> [Node]
         go ((M.!) parents -> parent)
