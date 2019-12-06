@@ -23,6 +23,7 @@ dependencies:
 - mtl
 - containers
 - split
+- array
 
 library:
   source-dirs: src
