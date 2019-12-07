@@ -103,7 +103,7 @@ step = do
 
 
     -- output
-    4  -> do value <- readAt (ip+1) >>= readAt
+    4  -> do value <- param 1
 
              output value
 
