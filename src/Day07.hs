@@ -7,7 +7,9 @@ module Day07 (part1, part2) where
 import           Control.Arrow       ((>>>))
 import           Control.Monad.State
 import           Data.Bool           (bool)
+import           Data.Function       ((&))
 import qualified Data.IntMap as IM
+import           Data.List           (permutations)
 import           Data.List.Split     (splitOn)
 
 
@@ -45,13 +47,23 @@ parse = split >>> map read >>> toMap
 
 {- Part 1 -}
 
-calc1 :: Input -> Output
-calc1 opcodes = Output result
-  where
-    result = evalState process start
+type Phase  = Int  -- phase setting
+type Signal = Int  -- amp input or output signal
 
-    -- the input list is just 1, given in the problem description
-    start  = Computer 0 opcodes Position Position [1] []
+calc1 :: Input -> Output
+calc1 opcodes = Output [result]
+  where
+    result = maximum [ try ps | ps <- permutations [0,1,2,3,4] ]
+
+    try :: [Phase] -> Signal
+    try phases = foldl run 0 phases
+      where
+        run :: Signal -> Phase -> Signal
+        run s p = evalState process start & last
+          where
+            start = Computer 0 opcodes Position Position [p,s] []
+
+    -- foldl :: Foldable t => (b -> a -> b) -> b -> t a -> b
 
 
 process :: State Computer [Int]
