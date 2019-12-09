@@ -286,3 +286,13 @@ part1 :: String -> String
 part1 = parse >>> calc1 >>> show
 part2 = parse >>> calc2 >>> show
 
+
+{-  jason@ubuntu18d:~/aoc2019$ time stack exec aoc2019-exe
+    [2453265701]
+    [80805]
+
+    real    0m0.493s
+    user    0m0.470s
+    sys     0m0.004s
+-}
+
