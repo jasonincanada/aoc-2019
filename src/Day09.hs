@@ -63,9 +63,7 @@ calc1 :: Input -> Output
 calc1 opcodes = Output result
   where
     result = evalState step start
-
-    -- the input list is just 1, given in the problem description
-    start  = initComp opcodes [1]
+    start  = initComp opcodes [1]  -- 1 is the starting input given by the problem
 
 
 step :: State Computer [Int]
@@ -275,9 +273,7 @@ calc2 :: Input -> Output
 calc2 opcodes = Output result
   where
     result = evalState step start
-
-    -- the input list is just 5, given in the problem description
-    start  = initComp opcodes [2]
+    start  = initComp opcodes [2]  -- 2 is the starting input given by the problem
 
 
 {- Operations -}
