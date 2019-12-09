@@ -1,4 +1,4 @@
-{-# Language LambdaCase #-}
+{-# Language LambdaCase, MultiWayIf #-}
 
 module Day09 (part1, part2) where
 
@@ -114,23 +114,19 @@ step = do
     -- jump-if-true
     5  -> do param1 <- param 1
 
-             if param1 /= 0
-             then do param 2 >>= seek
-                     step
-
-             else do jump 3
-                     step
+             if | param1 /= 0 -> do param 2 >>= seek
+                                    step
+                | otherwise   -> do jump 3
+                                    step
 
 
     -- jump-if-false
     6  -> do param1 <- param 1
 
-             if param1 == 0
-             then do param 2 >>= seek
-                     step
-
-             else do jump 3
-                     step
+             if | param1 == 0 -> do param 2 >>= seek
+                                    step
+                | otherwise   -> do jump 3
+                                    step
 
 
     -- less than
