@@ -112,9 +112,7 @@ step = do
 
 
     -- output
-    4  -> do value <- param 1
-
-             output value
+    4  -> do param 1 >>= output
 
              jump 2
              step
