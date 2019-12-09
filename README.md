@@ -6,6 +6,7 @@ There's an Advent of Code sub-reddit with great discussions and other participan
 
 Day | Title | Development Notes
 --- | --- | ---
+9 | [Sensor Boost](./src/Day09.hs) | Add Relative mode to the Intcode computer
 8 | [Space Image Format](./src/Day08.hs) | Render an ASCII image
 7 | [Amplification Circuit](./src/Day07.hs) | Run the computer from days 2 and 5 in series
 6 | [Universal Orbit Map](./src/Day06.hs) | Calculate path lengths and node distances in a graph
