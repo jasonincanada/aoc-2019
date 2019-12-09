@@ -232,8 +232,8 @@ dest i = do
   readAt (ip+i) >>= getValue i
 
   where
-    -- in Position mode, consider it an address and return what's at the address
-    -- in Relative mode, consider it an address and return what's at the address+base
+    -- in Position mode, consider it an address and return it
+    -- in Relative mode, consider it a relative address and return it+base
     getValue :: Int -> Int -> State Computer Int
     getValue n val
       | n == 1 = go mode1
