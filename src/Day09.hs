@@ -66,8 +66,8 @@ step = do
 
   let opcode = instruction `mod` 100
 
-  setMode 1 (getDigit 3 instruction == 1)
-  setMode 2 (getDigit 4 instruction == 1)
+  setMode 1 (getDigit 3 instruction)
+  setMode 2 (getDigit 4 instruction)
 
   case opcode of
 
@@ -182,7 +182,12 @@ adjustBase n = modify (\c -> c { base = base c + n })
 
 -- get an opcode at an address
 readAt :: Address -> State Computer Opcode
-readAt addy = gets (memory >>> flip (IM.!) addy)
+readAt addy = do
+  memory <- gets memory
+
+  case IM.lookup addy memory of
+    Nothing -> return 0
+    Just op -> return op
 
 -- get a parameter
 param :: Int -> State Computer Int
@@ -220,15 +225,19 @@ output value = do
   outputs <- gets outputs
   modify (\c -> c { outputs = value : outputs })
 
-setMode :: Int -> Bool -> State Computer ()
-setMode 1 mode = modify (\c -> c { mode1 = bool Position Immediate mode })
-setMode 2 mode = modify (\c -> c { mode2 = bool Position Immediate mode })
+setMode :: Int -> Int -> State Computer ()
+setMode 1 mode = modify (\c -> c { mode1 = toMode mode })
+setMode 2 mode = modify (\c -> c { mode2 = toMode mode })
+
+toMode 0 = Position
+toMode 1 = Immediate
+toMode 2 = Relative
 
 
 {- Part 2 -}
 
 calc2 :: Input -> Output
-calc2 opcodes = Output result
+calc2 opcodes = Output [-2] --  result
   where
     result = evalState process start
 
