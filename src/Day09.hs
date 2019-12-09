@@ -17,11 +17,12 @@ type Address = Int
 type Opcode  = Int
 type Input   = IM.IntMap Opcode
 
-data Mode    = Position | Immediate
+data Mode    = Position | Relative | Immediate
 
 -- the state of the computer at any time
 data Computer = Computer { address :: Address          -- instruction pointer
                          , memory  :: IM.IntMap Opcode -- RAM
+                         , base    :: Int              -- relative base
                          , mode1   :: Mode             -- modes set by latest instruction
                          , mode2   :: Mode
                          , inputs  :: [Int]            -- list of inputs for opcode 3
@@ -51,7 +52,7 @@ calc1 opcodes = Output result
     result = evalState process start
 
     -- the input list is just 1, given in the problem description
-    start  = Computer 0 opcodes Position Position [1] []
+    start  = Computer 0 opcodes 0 Position Position [1] []
 
 
 process :: State Computer [Int]
@@ -151,6 +152,13 @@ step = do
              step
 
 
+    -- adjust relative base
+    9  -> do param 1 >>= adjustBase
+
+             jump 2
+             step
+
+
     -- quit
     99 -> reverse <$> gets outputs
 
@@ -167,6 +175,10 @@ jump n = do
 -- move the instruction pointer
 seek :: Address -> State Computer ()
 seek addy = modify (\c -> c { address = addy } )
+
+-- adjust the relative base
+adjustBase :: Int -> State Computer ()
+adjustBase n = modify (\c -> c { base = base c + n })
 
 -- get an opcode at an address
 readAt :: Address -> State Computer Opcode
@@ -187,6 +199,7 @@ param i = do
       | n == 2 = go mode2
       where
         go m = gets m >>= \case Position  -> readAt val
+                                Relative  -> gets base >>= ((+val) >>> readAt)
                                 Immediate -> return val
 
 -- change an opcode at a position
@@ -220,7 +233,7 @@ calc2 opcodes = Output result
     result = evalState process start
 
     -- the input list is just 5, given in the problem description
-    start  = Computer 0 opcodes Position Position [5] []
+    start  = Computer 0 opcodes 0 Position Position [5] []
 
 
 {- Operations -}
