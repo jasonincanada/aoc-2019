@@ -62,14 +62,10 @@ initComp program inputs = Computer 0
 calc1 :: Input -> Output
 calc1 opcodes = Output result
   where
-    result = evalState process start
+    result = evalState step start
 
     -- the input list is just 1, given in the problem description
     start  = initComp opcodes [1]
-
-
-process :: State Computer [Int]
-process = seek 0 >> step
 
 
 step :: State Computer [Int]
@@ -278,7 +274,7 @@ toMode 2 = Relative
 calc2 :: Input -> Output
 calc2 opcodes = Output result
   where
-    result = evalState process start
+    result = evalState step start
 
     -- the input list is just 5, given in the problem description
     start  = initComp opcodes [2]
