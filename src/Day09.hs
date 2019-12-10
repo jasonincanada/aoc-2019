@@ -212,8 +212,8 @@ param i = do
       | n == 3 = go mode3
       where
         go :: (Computer -> Mode) -> State Computer Int
-        go m = gets m >>= \case Position  -> readAt val
-                                Immediate -> return val
+        go m = gets m >>= \case Immediate -> return val
+                                Position  -> readAt val
                                 Relative  -> gets base >>= ((+val) >>> readAt)
 
 
