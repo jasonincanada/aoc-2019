@@ -181,6 +181,10 @@ jump n = do
   Addr ip <- gets address
   seek (Addr $ ip+n)
 
+-- adjust an address by the given number of steps
+hop :: Int -> Address -> Address
+hop n (Addr a) = Addr (n+a)
+
 toAddr :: Value -> Address
 toAddr (Value a) = Addr a
 
@@ -204,8 +208,8 @@ readAt (Addr a) = do
 -- get a parameter value (which can be used in addition, mult, etc)
 param :: Int -> State Computer Value
 param i = do
-  Addr ip <- gets address
-  readAt (Addr $ ip+i) >>= getValue i
+  ip <- gets address
+  readAt (hop i ip) >>= getValue i
 
   where
     -- in Immediate mode, return the value
@@ -226,8 +230,8 @@ param i = do
 -- get a parameter representing a destination address for writing by the calling code
 dest :: Int -> State Computer Address
 dest i = do
-  Addr ip <- gets address
-  readAt (Addr $ ip+i) >>= getValue i
+  ip <- gets address
+  readAt (hop i ip) >>= getValue i
 
   where
     -- in Position mode, consider it an address and return it
