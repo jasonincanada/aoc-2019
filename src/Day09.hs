@@ -182,8 +182,8 @@ getDigit i number = number `div` (10^(i-1)) `mod` 10
 
 jump :: Int -> State Computer ()
 jump n = do
-  Addr ip <- gets address
-  seek (Addr $ ip+n)
+  ip <- gets address
+  seek (hop n ip)
 
 -- adjust an address by the given number of steps
 hop :: Int -> Address -> Address
