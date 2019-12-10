@@ -25,7 +25,7 @@ type RAM     = M.Map Address Value
 -- the state of the computer at any time
 data Computer = Computer { address :: Address          -- instruction pointer
                          , memory  :: RAM
-                         , base    :: Int              -- relative base
+                         , base    :: Address          -- relative base
                          , mode1   :: Mode             -- modes set by latest instruction
                          , mode2   :: Mode
                          , mode3   :: Mode
@@ -56,7 +56,7 @@ parse = split >>> map (read >>> Value) >>> toMap
 initComp :: RAM -> [Value] -> Computer
 initComp ram inputs = Computer (Addr 0)
                                ram
-                               0
+                               (Addr 0)
                                Position
                                Position
                                Position
@@ -198,7 +198,7 @@ seek a = modify (\c -> c { address = a } )
 
 -- adjust the relative base
 adjustBase :: Value -> State Computer ()
-adjustBase (Value n) = modify (\c -> c { base = base c + n })
+adjustBase (Value n) = modify (\c -> c { base = hop n (base c) })
 
 -- get an opcode at an address
 readAt :: Address -> State Computer Value
@@ -228,7 +228,7 @@ param i = do
         go :: (Computer -> Mode) -> State Computer Value
         go m = gets m >>= \case Immediate -> return $ Value val
                                 Position  -> readAt $ Addr val
-                                Relative  -> gets base >>= ((+val) >>> Addr >>> readAt)
+                                Relative  -> gets base >>= (hop val >>> readAt)
 
 
 -- get a parameter representing a destination address for writing by the calling code
@@ -248,7 +248,7 @@ dest i = do
       where
         go :: (Computer -> Mode) -> State Computer Address
         go m = gets m >>= \case Position  -> return $ Addr val
-                                Relative  -> gets base >>= ((+val) >>> Addr >>> return)
+                                Relative  -> gets base >>= (hop val >>> return)
 
 
 -- change an opcode at a position
