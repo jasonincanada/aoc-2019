@@ -6,6 +6,7 @@ There's an Advent of Code sub-reddit with great discussions and other participan
 
 Day | Title | Development Notes
 --- | --- | ---
+11 | [Space Police](./src/Day11.hs) | Load an Intcode computer onto a robot and paint a ship
 10 | [Monitoring Station](./src/Day10.hs) | Analyze an asteroid field and zap them in order
 9 | [Sensor Boost](./src/Day09.hs) | Add Relative mode to the Intcode computer
 8 | [Space Image Format](./src/Day08.hs) | Render an ASCII image
