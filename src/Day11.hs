@@ -36,12 +36,12 @@ data Computer = Computer { address :: Address          -- instruction pointer
                          }
 
 -- the state of the paint robot at any time
-data Robot = Robot { panels    :: M.Map Pos Color
-                   , painted   :: S.Set Pos
+data Robot = Robot { panels    :: M.Map Pos Color  -- map of known panel colors
+                   , painted   :: S.Set Pos        -- any tile that's been painted
                    , position  :: Pos
                    , direction :: Dir
-                   , computer  :: Computer
-                   , queue     :: [Int]
+                   , computer  :: Computer         -- encapsulate the computer's state
+                   , queue     :: [Int]            -- output signals queue up until 2
                    }
 
 data StepResult = SignalOut Int   -- the program has output a value
