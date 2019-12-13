@@ -6,6 +6,7 @@ There's an Advent of Code sub-reddit with great discussions and other participan
 
 Day | Title | Development Notes
 --- | --- | ---
+12 | The N-Body Problem | Calculate moon orbits (part 2 in progress)
 11 | [Space Police](./src/Day11.hs) | Load an Intcode computer onto a robot and paint a ship
 10 | [Monitoring Station](./src/Day10.hs) | Analyze an asteroid field and zap them in order
 9 | [Sensor Boost](./src/Day09.hs) | Add Relative mode to the Intcode computer
