@@ -6,6 +6,7 @@ There's an Advent of Code sub-reddit with great discussions and other participan
 
 Day | Title | Development Notes
 --- | --- | ---
+13 | [Care Package](./src/Day13.hs) | Load an Intcode computer onto an arcade cabinet and play it
 12 | The N-Body Problem | Calculate moon orbits (part 2 in progress)
 11 | [Space Police](./src/Day11.hs) | Load an Intcode computer onto a robot and paint a ship
 10 | [Monitoring Station](./src/Day10.hs) | Analyze an asteroid field and zap them in order
