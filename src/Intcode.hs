@@ -7,7 +7,7 @@ module Intcode (
   Address(..), Intcode(..), RAM, StepResult(..), Value(..),
 
   -- functions
-  initIntcode, sendInput, step
+  initIntcode, sendInput, step, stepInput
 ) where
 
 
@@ -263,6 +263,9 @@ addInput val = modify (\c -> c { inputs = inputs c ++ [Value val] } )
 -- exported to calling module
 sendInput :: Int -> Intcode -> Intcode
 sendInput val comp = execState (addInput val) comp
+
+stepInput :: Int -> State Intcode StepResult
+stepInput val = addInput val >> step
 
 output :: Value -> State Intcode ()
 output (Value v) = do
