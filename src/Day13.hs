@@ -82,8 +82,8 @@ calc1 opcodes = Part1 result
   where
     comp    = initComp opcodes [] True
     arcade  = initArcade comp
-    state   = evalState goarcade arcade
-    result  = M.size $ M.filter (==Block) state
+    screen  = evalState goarcade arcade
+    result  = M.size $ M.filter (==Block) screen
 
 
 -- initialize a computer with a given program and list of inputs
