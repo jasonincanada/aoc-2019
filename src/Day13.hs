@@ -99,7 +99,7 @@ initComp ram inputs signals = Computer (Addr 0)
                                        signals
 
 
--- initialize an arcade machine
+-- initialize an arcade machine with an Intcode computer
 initArcade :: Computer -> Arcade
 initArcade comp = Arcade M.empty comp [] 0 0 0
 
