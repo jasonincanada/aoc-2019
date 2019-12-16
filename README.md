@@ -6,6 +6,8 @@ There's an Advent of Code sub-reddit with great discussions and other participan
 
 Day | Title | Development Notes
 --- | --- | ---
+15 | [Oxygen System](./src/Day15.hs) | Start in darkness and feel our way around a map
+14 | Space Stoichiometry | Calculate ore requirements to produce fuel *(in progress)*
 13 | [Care Package](./src/Day13.hs) | Load an Intcode computer onto an arcade cabinet and play it
 12 | [The N-Body Problem](./src/Day12.hs) | Calculate moon orbits *(part 2 in progress)*
 11 | [Space Police](./src/Day11.hs) | Load an Intcode computer onto a robot and paint a ship
