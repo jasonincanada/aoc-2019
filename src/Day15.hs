@@ -1,4 +1,4 @@
-{-# Language LambdaCase, MultiWayIf, ViewPatterns #-}
+{-# Language LambdaCase, ViewPatterns #-}
 
 module Day15 (part1, part2) where
 
@@ -10,6 +10,7 @@ import           Data.Bool           (bool)
 import qualified Data.Map.Strict as M
 import           Data.List.Split     (splitOn)
 
+import           Dijkstra
 import           Intcode hiding (signal)
 
 
@@ -30,7 +31,7 @@ data DroidStepResult = HitWall
 
 data Droid  = Droid { maze      :: M.Map Pos Tile
                     , intcode   :: Intcode         -- the embedded Intcode computer
-                    , position  :: Pos             -- curret location of droid
+                    , position  :: Pos             -- current location of droid
                     , direction :: Dir             -- direction the droid is pointing
                     }
 
@@ -67,7 +68,7 @@ calc1 opcodes = Part1 result
     floor   = maze $ execState explore droid
 
     -- find the shortest paths from the origin to all other cells
-    (ls, _) = dijkstra (0,0) floor
+    (ls, _) = search (0,0) floor
 
     -- find the distance to the Oxygen cell
     oxygen  = head $ M.keys $ M.filter (==Oxygen) floor
@@ -177,35 +178,13 @@ move :: Pos -> Dir -> Pos
 move (x,y) (dx,dy) = (x+dx, y+dy)
 
 
-{- Djikstra's shortest path algo -}
+{- Path finding -}
 
-dijkstra :: Pos -> M.Map Pos Tile -> (M.Map Pos Int, Int)
-dijkstra from floormap =
-
-  let edges    = makeEdges (M.keys $ M.filter f floormap)
-      f tile   = tile == Floor || tile == Oxygen
-      explored = M.singleton from 0
-
-   in go edges explored 0
-
+search :: Pos -> M.Map Pos Tile -> (M.Map Pos Int, Int)
+search from floormap = dijkstra from edges
   where
-    go :: [(Pos, Pos)] -> M.Map Pos Int -> Int -> (M.Map Pos Int, Int)
-    go edges explored count =
-
-      let frontier = [ (from,to) | (from,to) <- edges,
-
-                                   from `M.member`    explored,
-                                   to   `M.notMember` explored ]
-      in
-        if | null frontier -> (explored, count)
-           | otherwise     ->
-
-              let new = M.union
-                          explored
-                          $ M.fromList [ (to, dist+1) | (from,to) <- frontier,
-                                                        let dist = explored M.! from ]
-              in  go edges new (count+1)
-
+    edges    = makeEdges (M.keys $ M.filter f floormap)
+    f tile   = tile == Floor || tile == Oxygen
 
     -- get the set of bidirectional edges connecting the tiles in this floor
     makeEdges :: [Pos] -> [(Pos, Pos)]
@@ -231,7 +210,7 @@ calc2 opcodes = Part2 result
     droid    = initDroid comp
     floormap = maze $ execState explore droid
     oxygen   = head $ M.keys $ M.filter (==Oxygen) floormap
-    (_, c)   = dijkstra oxygen floormap
+    (_, c)   = search oxygen floormap
     result   = c
 
 
