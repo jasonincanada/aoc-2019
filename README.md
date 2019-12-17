@@ -6,6 +6,7 @@ There's an Advent of Code sub-reddit with great discussions and other participan
 
 Day | Title | Development Notes
 --- | --- | ---
+16 | [Frequency Transmission](./src/Day16.hs) | Process a list of numbers *(part 2 tbd)*
 15 | [Oxygen System](./src/Day15.hs) | Start in darkness and feel our way around a map
 14 | Space Stoichiometry | Calculate ore requirements to produce fuel *(in progress)*
 13 | [Care Package](./src/Day13.hs) | Load an Intcode computer onto an arcade cabinet and play it
