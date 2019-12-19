@@ -7,7 +7,7 @@ module Intcode (
   Address(..), Intcode(..), RAM, StepResult(..), Value(..),
 
   -- functions
-  initIntcode, sendInput, step, stepInput
+  initIntcode, addInput, sendInput, step, stepInput
 ) where
 
 
