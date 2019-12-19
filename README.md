@@ -6,6 +6,8 @@ There's an Advent of Code sub-reddit with great discussions and other participan
 
 Day | Title | Development Notes
 --- | --- | ---
+19 | [Tractor Beam](./src/Day19.hs) | Inspect a tractor beam with a programmable drone
+18 | Many Worlds | Find the quickest way to unlock all doors on a map (tbd)
 17 | [Set and Forget](./src/Day17.hs) | Program a robot with limited RAM to traverse a path
 16 | [Frequency Transmission](./src/Day16.hs) | Process a list of numbers *(part 2 tbd)*
 15 | [Oxygen System](./src/Day15.hs) | Start in darkness and feel our way around a map
